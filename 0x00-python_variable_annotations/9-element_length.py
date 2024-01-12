@@ -10,6 +10,6 @@ def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
     Each tuple contains an element from the input list and its length.
 
     :param lst: The input iterable of sequences.
-    :return: A list of tuples
+    :return: A list of tuples.
     """
     return [(i, len(i)) for i in lst]
