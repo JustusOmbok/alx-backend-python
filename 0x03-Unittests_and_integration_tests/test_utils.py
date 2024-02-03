@@ -51,33 +51,30 @@ class TestGetJson(unittest.TestCase):
         self.assertEqual(result, test_payload)
 
 
-class TestClass:
-
-    def a_method(self):
-        return 42
-
-    @memoize
-    def a_property(self):
-        return self.a_method()
-
-
 class TestMemoize(unittest.TestCase):
+    """Module formemoize function.
+    """
 
-    @patch.object(TestClass, 'a_method')
-    def test_memoize(self, mock_a_method):
-        test_instance = TestClass()
+    def test_memoize(self) -> None:
+        """Tests memoize func output."""
+        class TestClass:
+            def a_method(self):
+                return 42
 
-        # First call to a_property
-        result1 = test_instance.a_property()
+            @memoize
+            def a_property(self):
+                return self.a_method()
 
-        # Second call to a_property
-        result2 = test_instance.a_property()
+        with patch.object(
+                TestClass, "a_method", return_value=lambda: 42
+                ) as memo_fxn:
+            test_class = TestClass()
+            result1 = test_class.a_property()
+            result2 = test_class.a_property()
 
-        # a_method should be called only once
-        mock_a_method.assert_called_once()
-
-        # Result of both calls should be the same
-        self.assertEqual(result1, result2)
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+            memo_fxn.assert_called_once()
 
 
 if __name__ == '__main__':
